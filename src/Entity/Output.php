@@ -40,12 +40,12 @@ class Output
 
     #[ORM\ManyToOne(inversedBy: 'outputs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?member $organisator = null;
+    private ?User $organisator = null;
 
     /**
-     * @var Collection<int, member>
+     * @var Collection<int, User>
      */
-    #[ORM\ManyToMany(targetEntity: member::class, inversedBy: 'outputs')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'outputs')]
     private Collection $members;
 
     #[ORM\ManyToOne(inversedBy: 'outputs')]
@@ -150,12 +150,12 @@ class Output
         return $this;
     }
 
-    public function getOrganisator(): ?member
+    public function getOrganisator(): ?User
     {
         return $this->organisator;
     }
 
-    public function setOrganisator(?member $organisator): static
+    public function setOrganisator(?User $organisator): static
     {
         $this->organisator = $organisator;
 
@@ -163,14 +163,14 @@ class Output
     }
 
     /**
-     * @return Collection<int, member>
+     * @return Collection<int, User>
      */
     public function getMembers(): Collection
     {
         return $this->members;
     }
 
-    public function addMember(member $member): static
+    public function addMember(User $member): static
     {
         if (!$this->members->contains($member)) {
             $this->members->add($member);
@@ -179,7 +179,7 @@ class Output
         return $this;
     }
 
-    public function removeMember(member $member): static
+    public function removeMember(User $member): static
     {
         $this->members->removeElement($member);
 

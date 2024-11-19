@@ -25,9 +25,9 @@ class Site
     private Collection $outputs;
 
     /**
-     * @var Collection<int, Member>
+     * @var Collection<int, User>
      */
-    #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'site', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'site', orphanRemoval: true)]
     private Collection $members;
 
     public function __construct()
@@ -84,14 +84,14 @@ class Site
     }
 
     /**
-     * @return Collection<int, Member>
+     * @return Collection<int, User>
      */
     public function getMembers(): Collection
     {
         return $this->members;
     }
 
-    public function addMember(Member $member): static
+    public function addMember(User $member): static
     {
         if (!$this->members->contains($member)) {
             $this->members->add($member);
@@ -101,7 +101,7 @@ class Site
         return $this;
     }
 
-    public function removeMember(Member $member): static
+    public function removeMember(User $member): static
     {
         if ($this->members->removeElement($member)) {
             // set the owning side to null (unless already changed)

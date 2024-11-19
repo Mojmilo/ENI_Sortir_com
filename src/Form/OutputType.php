@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\location;
-use App\Entity\member;
+use App\Entity\user;
 use App\Entity\Output;
 use App\Entity\site;
 use App\Entity\status;
@@ -32,11 +32,11 @@ class OutputType extends AbstractType
                 'choice_label' => 'id',
             ])
             ->add('organisator', EntityType::class, [
-                'class' => member::class,
+                'class' => user::class,
                 'choice_label' => 'id',
             ])
             ->add('members', EntityType::class, [
-                'class' => member::class,
+                'class' => user::class,
                 'choice_label' => 'id',
                 'multiple' => true,
             ])
