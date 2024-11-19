@@ -28,8 +28,7 @@ final class OutputController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $output = new Output();
-        //$site = $this->getUser()->getMember()->getSite(); // TODO : A faire
-        $site = $entityManager->getReference(Member::class, 1)->getSite();
+        $site = $this->getUser()->getSite();
         $output->setSite($site);
         $form = $this->createForm(OutputType::class, $output);
         $form->handleRequest($request);
@@ -42,9 +41,8 @@ final class OutputController extends AbstractController
 
             $isPublished = $request->request->get('action') === 'save_and_publish'; // TODO : A faire
 
-            $output->setStatus($entityManager->getReference(Status::class, 1));
-            // $output->setOrganisator($this->getUser()); TODO : A faire
-            $output->setOrganisator($entityManager->getReference(Member::class, 1));
+            $output->setStatus($entityManager->getReference(Status::class, 1)); // TODO : Utiliser une enum
+            $output->setOrganisator($this->getUser());
             $entityManager->persist($output);
             $entityManager->flush();
 
