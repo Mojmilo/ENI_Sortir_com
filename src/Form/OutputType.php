@@ -9,6 +9,10 @@ use App\Entity\site;
 use App\Entity\status;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,37 +21,33 @@ class OutputType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', TextType::class, [
+                'label' => 'Nom de la sortie',
+            ])
             ->add('startDatetime', null, [
+                'label' => 'Date et heure de la sortie',
                 'widget' => 'single_text',
             ])
-            ->add('duration')
+            ->add('duration', NumberType::class, [
+                'label' => 'Durée',
+            ])
             ->add('registrationDeadline', null, [
+                'label' => 'Date limite d\'inscription',
                 'widget' => 'single_text',
             ])
-            ->add('maxNumberRegistration')
-            ->add('exitInfos')
-            ->add('status', EntityType::class, [
-                'class' => status::class,
-                'choice_label' => 'id',
+            ->add('maxNumberRegistration', NumberType::class, [
+                'label' => 'Nombre de places',
             ])
-            ->add('organisator', EntityType::class, [
-                'class' => member::class,
-                'choice_label' => 'id',
-            ])
-            ->add('members', EntityType::class, [
-                'class' => member::class,
-                'choice_label' => 'id',
-                'multiple' => true,
+            ->add('exitInfos', TextareaType::class, [
+                'label' => 'Description et infos',
             ])
             ->add('site', EntityType::class, [
+                'label' => 'Site',
                 'class' => site::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
+                'disabled' => true,
             ])
-            ->add('location', EntityType::class, [
-                'class' => location::class,
-                'choice_label' => 'id',
-            ])
+            ->add('location', LocationType::class)
         ;
     }
 
