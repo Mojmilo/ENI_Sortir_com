@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Output;
+use App\Entity\Site;
 use App\Form\OutputType;
 use App\Repository\OutputRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,10 +16,44 @@ use Symfony\Component\Routing\Attribute\Route;
 final class OutputController extends AbstractController
 {
     #[Route(name: 'app_output_index', methods: ['GET'])]
-    public function index(OutputRepository $outputRepository): Response
+    public function index(Request $request, OutputRepository $outputRepository, EntityManagerInterface $entityManager): Response
     {
+        $name = $request->query->get('name');
+        $site = $request->query->get('site');
+        $startDatetime = $request->query->get('startDatetime');
+        $endDatetime = $request->query->get('endDatetime');
+
+        $sites = $entityManager->getRepository(Site::class)->findAll();
+
+        $outputs = $outputRepository->findGeneral();
+
+        if ($name) {
+            $outputs->andWhere('o.name LIKE :name')
+                ->setParameter('name', '%' . $name . '%');
+        }
+
+        if ($site) {
+            $outputs->andWhere('o.site = :site')
+                ->setParameter('site', $site);
+        }
+
+        if ($startDatetime) {
+            $outputs->andWhere('o.startDatetime >= :startDatetime')
+                ->setParameter('startDatetime', $startDatetime);
+        }
+
+        if ($endDatetime) {
+            $outputs->andWhere('o.startDatetime <= :endDatetime')
+                ->setParameter('endDatetime', $endDatetime);
+        }
+
         return $this->render('output/index.html.twig', [
-            'outputs' => $outputRepository->findAll(),
+            'outputs' => $outputs->getQuery()->getResult(),
+            'name' => $name,
+            'site' => $site,
+            'sites' => $sites,
+            'startDatetime' => $startDatetime,
+            'endDatetime' => $endDatetime,
         ]);
     }
 
