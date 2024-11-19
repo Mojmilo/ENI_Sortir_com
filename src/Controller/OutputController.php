@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Member;
 use App\Entity\Output;
+use App\Entity\Status;
 use App\Form\OutputType;
 use App\Repository\OutputRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,10 +28,23 @@ final class OutputController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $output = new Output();
+        //$site = $this->getUser()->getMember()->getSite(); // TODO : A faire
+        $site = $entityManager->getReference(Member::class, 1)->getSite();
+        $output->setSite($site);
         $form = $this->createForm(OutputType::class, $output);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $location = $output->getLocation();
+            if ($location) {
+                $entityManager->persist($location);
+            }
+
+            $isPublished = $request->request->get('action') === 'save_and_publish'; // TODO : A faire
+
+            $output->setStatus($entityManager->getReference(Status::class, 1));
+            // $output->setOrganisator($this->getUser()); TODO : A faire
+            $output->setOrganisator($entityManager->getReference(Member::class, 1));
             $entityManager->persist($output);
             $entityManager->flush();
 
