@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Output;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -40,4 +41,9 @@ class OutputRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findGeneral(): QueryBuilder
+    {
+        return $this->createQueryBuilder('o');
+    }
 }
