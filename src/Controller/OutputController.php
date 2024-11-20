@@ -125,4 +125,18 @@ final class OutputController extends AbstractController
 
         return $this->redirectToRoute('app_output_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/cancel', name: 'app_output_cancel', methods: ['GET', 'POST'])]
+    public function cancel(Request $request, Output $output, EntityManagerInterface $entityManager): Response
+    {
+        if ($output->getStartDatetime() < new \DateTime()) {
+            $this->addFlash('danger', 'Impossible de supprimer une sortie passée');
+            return $this->redirectToRoute('app_output_index');
+        } else {
+            $output->setStatus(Status::CANCELLED);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_output_index');
+    }
 }

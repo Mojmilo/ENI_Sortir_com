@@ -9,5 +9,5 @@ enum Status: string
     case CLOSED = 'closed';
     case IN_PROGRESS = 'in_progress';
     case PAST = 'past';
-    case CANCELED = 'canceled';
+    case CANCELLED = 'cancelled';
 }
