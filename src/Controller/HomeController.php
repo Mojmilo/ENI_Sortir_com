@@ -47,6 +47,10 @@ final class HomeController extends AbstractController
             $outputs->andWhere('o.startDatetime <= :endDatetime')
                 ->setParameter('endDatetime', $endDatetime);
         }
+
+        $outputs->andWhere('o.status != :status')
+            ->setParameter('status', 'past');
+
         return $this->render('home/index.html.twig', [
             'outputs' => $outputs->getQuery()->getResult(),
             'name' => $name,

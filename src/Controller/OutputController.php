@@ -139,4 +139,20 @@ final class OutputController extends AbstractController
 
         return $this->redirectToRoute('app_output_index');
     }
+
+    #[Route('/{id}/archive', name: 'app_output_archive', methods: ['GET', 'POST'])]
+    public function archive(Request $request, Output $output, EntityManagerInterface $entityManager): Response
+    {
+        $oneMonthAgo = (new \DateTime())->modify('-1 month');
+
+        if ($output->getStartDatetime() >= $oneMonthAgo) {
+            $this->addFlash('danger', 'Impossible de supprimer une sortie passée depuis plus d’un mois');
+            return $this->redirectToRoute('app_output_index');
+        } else {
+            $output->setStatus(Status::PAST);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_output_index');
+    }
 }
