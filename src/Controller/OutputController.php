@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Member;
 use App\Entity\Output;
 use App\Entity\Site;
-use App\Entity\Status;
+use App\Enum\Status;
 use App\Form\OutputType;
 use App\Repository\OutputRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -76,7 +75,7 @@ final class OutputController extends AbstractController
 
             $isPublished = $request->request->get('action') === 'save_and_publish'; // TODO : A faire
 
-            $output->setStatus($entityManager->getReference(Status::class, 1)); // TODO : Utiliser une enum
+            $output->setStatus(Status::CREATED);
             $output->setOrganisator($this->getUser());
             $entityManager->persist($output);
             $entityManager->flush();

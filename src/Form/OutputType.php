@@ -2,14 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\location;
 use App\Entity\member;
 use App\Entity\Output;
 use App\Entity\site;
-use App\Entity\status;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

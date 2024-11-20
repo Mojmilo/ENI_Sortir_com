@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\Status;
 use App\Repository\OutputRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -36,10 +37,6 @@ class Output
 
     #[ORM\ManyToOne(inversedBy: 'outputs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?status $status = null;
-
-    #[ORM\ManyToOne(inversedBy: 'outputs')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?User $organisator = null;
 
     /**
@@ -55,6 +52,9 @@ class Output
     #[ORM\ManyToOne(inversedBy: 'outputs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?location $location = null;
+
+    #[ORM\Column(length: 255)]
+    private ?Status $status = null;
 
     public function __construct()
     {
@@ -138,18 +138,6 @@ class Output
         return $this;
     }
 
-    public function getStatus(): ?status
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?status $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     public function getOrganisator(): ?User
     {
         return $this->organisator;
@@ -206,6 +194,18 @@ class Output
     public function setLocation(?location $location): static
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(Status $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
