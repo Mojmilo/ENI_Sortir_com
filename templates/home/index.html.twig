@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}City index{% endblock %}
+
+{% block body %}
+    {{ include('_header.html.twig') }}
+
+    {# <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>PostalCode</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for output in outputs %}
+            <tr>
+                <td>{{ output.id }}</td>
+                <td>{{ output.name }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table> #}
+
+    <section class="flex flex-col items-start justify-center gap-20 px-20">
+        <div class="flex flex-col items-start justify-center gap-10 w-full">
+            <span class="text-4xl font-semibold">Recherche de sorties</span>
+
+            <form class="space-y-6 w-full" action="#" method="GET">
+                <div>
+                    <div class="mt-2 flex justify-between items-center">
+                        <div>
+                            <label for="site" class="block text-sm/6 font-medium text-gray-900">Site</label>
+                            <div class="mt-2">
+                                <select name="site" id="site" class="pl-2 block w-60 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                                    <option value="">Tous les sites</option>
+                                    {% for s in sites %}
+                                        <option
+                                                value="{{ s.id }}"
+                                                {% if site == s.id %}selected{% endif %}
+                                        >{{ s.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex justify-center items-center gap-4">
+                            <div>
+                                <label for="startDatetime" class="block text-sm/6 font-medium text-gray-900">Entre</label>
+                                <div class="mt-2">
+                                    <input id="startDatetime" name="startDatetime" type="datetime-local" value="{{ startDatetime }}" class="pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="endDatetime" class="block text-sm/6 font-medium text-gray-900">Et</label>
+                                <div class="mt-2">
+                                    <input id="endDatetime" name="endDatetime" type="datetime-local" value="{{ endDatetime }}" class="pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="name" class="block text-sm/6 font-medium text-gray-900">Nom de la sortie</label>
+                    <div class="mt-2">
+                        <input id="name" name="name" type="text" value="{{ name }}" class="pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                    </div>
+                </div>
+
+                <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Rechercher</button>
+            </form>
+        </div>
+
+        <div class="flex flex-col items-start justify-center gap-10 w-full">
+            <div class="flex flex-col items-start justify-center gap-2">
+                <span class="text-4xl font-semibold">Prochaine sorties disponibles</span>
+                <span class="text-sm">{{ outputs|length }} sorties à venir</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 w-full">
+                {% for output in outputs %}
+                    <div class="flex flex-col items-start justify-center gap-2">
+                        <image src="{{ asset('images/event.jpg') }}" class="w-full h-[200px] object-cover"></image>
+                        <div class="flex flex-col items-start justify-center gap-1">
+                            <span class="text-lg font-semibold">{{ output.name }}</span>
+                            <span class="text-xs text-gray-900">{{ output.site.name }}</span>
+                            <div class="flex justify-center items-center gap-2">
+                    <span class="text-sm font-semibold text-orange-700">
+                        {{ output.startDatetime|date('D. d M.') }}
+                    </span>
+                                <div class="w-[1px] h-4 bg-gray-900"></div>
+                                <span class="text-sm font-semibold text-orange-700">
+                        {{ output.startDatetime|date('H:i') }}
+                    </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
