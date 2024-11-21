@@ -30,7 +30,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         if(!$user) {
-            throw $this->createNotFoundException('User not found');
+            return $this->redirectToRoute('app_login');
         }
         
         return $this->render('user/show.html.twig', [
@@ -58,12 +58,23 @@ class UserController extends AbstractController
     #[Route('/update/{id}', name:'app_user_id_update', requirements:['id'=>'\d+'], methods: ['GET', 'POST'])]
     public function update(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
+
         // Get the user by id
         $user = $entityManager->getRepository(User::class)->findOneBy(array('id' => $id));
 
-        if(!$user) {
-            throw $this->createNotFoundException('User not found');
+        // Get the logged-in user
+        $currentUser = $this->getUser();
+
+        if(!$currentUser) {
+            return $this->redirectToRoute('app_login');
         }
+        
+        // 
+        if($currentUser->getId() != $user->getId() && in_array('ROLE_ADMIN', $currentUser->getRoles(), true)==false) {
+            throw $this->createAccessDeniedException('Not authorized');
+        }
+
+        
         
         // Create the form with the user's data
         $userForm = $this->createForm(UserType::class, $user);
@@ -81,6 +92,7 @@ class UserController extends AbstractController
         
         return $this->render('user/update.html.twig', [
             'userForm' => $userForm,
+            'user' => $user
         ]);
     }
 
