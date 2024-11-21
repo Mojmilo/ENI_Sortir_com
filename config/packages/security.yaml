@@ -34,9 +34,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                # target: app_any_route
-                # where to redirect after logout
-                # target: app_any_route
+                target: app_login
             remember_me:
                 secret: '%kernel.secret%' # required
                 lifetime: 604800 # 1 week in seconds
@@ -52,10 +50,10 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/output, roles: ROLE_USER }
-        - { path: ^/city, roles: ROLE_USER }
+        - { path: ^/city, roles: ROLE_ADMIN }
         - { path: ^/location, roles: ROLE_USER }
         - { path: ^/member, roles: ROLE_USER }
-        - { path: ^/site, roles: ROLE_USER }
+        - { path: ^/site, roles: ROLE_ADMIN }
         - { path: ^/status, roles: ROLE_USER }
 
 when@test:
