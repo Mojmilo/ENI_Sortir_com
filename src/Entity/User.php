@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -21,18 +22,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un pseudo.')]
+    #[Assert\Length(min: 1, max:35)]
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un prénom.')]
+    #[Assert\Length(min: 1, max:50)]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un nom.')]
+    #[Assert\Length(min: 1, max:50)]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 10, max:10)]
     private ?string $phone = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un email.')]
+    #[Assert\Length(min: 1, max:180)]
     private ?string $email = null;
 
     /**

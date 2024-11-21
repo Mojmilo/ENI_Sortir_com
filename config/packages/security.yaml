@@ -55,6 +55,7 @@ security:
         - { path: ^/member, roles: ROLE_USER }
         - { path: ^/site, roles: ROLE_ADMIN }
         - { path: ^/status, roles: ROLE_USER }
+        - { path: ^/profil, roles: ROLE_USER }
 
 when@test:
     security:
