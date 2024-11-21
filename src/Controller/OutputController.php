@@ -73,9 +73,13 @@ final class OutputController extends AbstractController
                 $entityManager->persist($location);
             }
 
-            $isPublished = $request->request->get('action') === 'save_and_publish'; // TODO : A faire
+            $isPublished = $request->request->get('action') === 'save_and_publish';
 
-            $output->setStatus(Status::CREATED);
+            if ($isPublished) {
+                $output->setStatus(Status::OPEN);
+            } else {
+                $output->setStatus(Status::CREATED);
+            }
             $output->setOrganisator($this->getUser());
             $entityManager->persist($output);
             $entityManager->flush();

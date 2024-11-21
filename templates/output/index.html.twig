@@ -177,14 +177,18 @@
                                 </a>
                             {% endif %}
 
-                            {% if output.isMemberExist(app.user) and output.startDatetime >= date('now') %}
-                                <a href="{{ path('app_output_unjoin', {'id': output.id}) }}">
-                                    se désinscrire
-                                </a>
-                            {% elseif output.status.value == 'open' and output.registrationDeadline >= date('now') %}
-                                <a href="{{ path('app_output_join', {'id': output.id}) }}">
-                                    s'inscrire
-                                </a>
+                            {% if output.isMemberExist(app.user) %}
+                                {% if output.startDatetime >= date('now') %}
+                                    <a href="{{ path('app_output_unjoin', {'id': output.id}) }}">
+                                        se désinscrire
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                {% if output.status.value == 'open' and output.registrationDeadline >= date('now') %}
+                                    <a href="{{ path('app_output_join', {'id': output.id}) }}">
+                                        s'inscrire
+                                    </a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </td>
