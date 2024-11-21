@@ -174,6 +174,11 @@ class Output
         return $this;
     }
 
+    public function isMemberExist(User $member): bool
+    {
+        return $this->members->contains($member);
+    }
+
     public function getSite(): ?site
     {
         return $this->site;

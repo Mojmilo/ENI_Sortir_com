@@ -155,4 +155,28 @@ final class OutputController extends AbstractController
 
         return $this->redirectToRoute('app_output_index');
     }
+
+    #[Route('/{id}/join', name: 'app_output_join', methods: ['GET', 'POST'])]
+    public function join(Request $request, Output $output, EntityManagerInterface $entityManager): Response
+    {
+        if($output->getStatus() == Status::OPEN && $output->getRegistrationDeadline() > new \DateTime()) {
+            $user = $this->getUser();
+            $output->addMember($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_output_index');
+    }
+
+    #[Route('/{id}/unjoin', name: 'app_output_unjoin', methods: ['GET', 'POST'])]
+    public function unjoin(Request $request, Output $output, EntityManagerInterface $entityManager): Response
+    {
+        if ($output->getStartDatetime() > new \DateTime()) {
+            $user = $this->getUser();
+            $output->removeMember($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_output_index');
+    }
 }
