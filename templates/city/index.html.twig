@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    {{ include('_header.html.twig') }} 
+    {{ include('_header.html.twig') }}
 
 
     <div class="flex flex-col justify-center px-6 py-12 lg:px-8">
@@ -34,12 +34,12 @@
                             {{ city.id }}
                         </th>
                         <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {{ city.name }} 
+                            {{ city.name }}
                         </th>
                         <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {{ city.postalCode }} 
+                            {{ city.postalCode }}
                         </th>
-                                        
+
                         <td class="px-6 py-4">
                             <div class="flex justify-center items-center gap-4">
                                 <a href="">
@@ -65,7 +65,7 @@
                 </tbody>
             </table>
         </div>
-        
+
 
         <div class="mt-10">
             <a href="{{ path('app_city_new') }}">

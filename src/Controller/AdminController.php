@@ -20,7 +20,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-   
+
     /*public function new(): Response
     {
 
