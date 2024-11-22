@@ -3,47 +3,7 @@
 {% block title %}Output index{% endblock %}
 
 {% block body %}
-    {# {{ include('_header.html.twig') }} #}
-
-    {# <h1>Output index</h1> #}
-
-    {# <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>StartDatetime</th>
-                <th>Duration</th>
-                <th>RegistrationDeadline</th>
-                <th>MaxNumberRegistration</th>
-                <th>ExitInfos</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for output in outputs %}
-            <tr>
-                <td>{{ output.id }}</td>
-                <td>{{ output.name }}</td>
-                <td>{{ output.startDatetime ? output.startDatetime|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ output.duration }}</td>
-                <td>{{ output.registrationDeadline ? output.registrationDeadline|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ output.maxNumberRegistration }}</td>
-                <td>{{ output.exitInfos }}</td>
-                <td>
-                    <a href="{{ path('app_output_show', {'id': output.id}) }}">show</a>
-                    <a href="{{ path('app_output_edit', {'id': output.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table> > #}
-
-    {# <a href="{{ path('app_output_new') }}">Create new</a> #}
+    {{ include('_header.html.twig') }} 
 
     <div class="flex flex-col justify-center px-6 py-12 lg:px-8">
         <h2 class="mt-10 text-2xl/9 font-bold tracking-tight text-gray-900">Filtrer les sorties</h2>
@@ -92,7 +52,7 @@
         </form>
 
         <table class="mt-10 w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead class="text-xs text-gray-700 uppercase">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr class="border-b">
                     <th class="px-6 py-3">
                         Nom de la sortie
@@ -122,7 +82,7 @@
             </thead>
             <tbody>
             {% for output in outputs %}
-                <tr class="bg-white border-t">
+                <tr class="bg-white border-t bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         {{ output.name }}
                     </th>

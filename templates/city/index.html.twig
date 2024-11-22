@@ -3,35 +3,74 @@
 {% block title %}City index{% endblock %}
 
 {% block body %}
-    <h1>City index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>PostalCode</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for city in cities %}
-            <tr>
-                <td>{{ city.id }}</td>
-                <td>{{ city.name }}</td>
-                <td>{{ city.postalCode }}</td>
-                <td>
-                    <a href="{{ path('app_city_show', {'id': city.id}) }}">show</a>
-                    <a href="{{ path('app_city_edit', {'id': city.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {{ include('_header.html.twig') }} 
 
-    <a href="{{ path('app_city_new') }}">Create new</a>
+
+    <div class="flex flex-col justify-center px-6 py-12 lg:px-8">
+        <h2 class="mt-10 text-2xl/9 font-bold tracking-tight text-gray-900">Ville index</h2>
+        <div class="relative overflow-x-auto sm:rounded-lg">
+            <table class="mt-10 w-full text-sm text-left rtl:text-right text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr class="border-b">
+                        <th class="px-6 py-3">
+                            ID
+                        </th>
+                        <th class="px-6 py-3">
+                            Nom
+                        </th>
+                        <th class="px-6 py-3">
+                            Code Postal
+                        </th>
+                        <th class="px-6 py-3">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for city in cities %}
+                    <tr class="bg-white border-t bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {{ city.id }}
+                        </th>
+                        <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {{ city.name }} 
+                        </th>
+                        <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {{ city.postalCode }} 
+                        </th>
+                                        
+                        <td class="px-6 py-4">
+                            <div class="flex justify-center items-center gap-4">
+                                <a href="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+                                        <path d="M21.544 11.045C21.848 11.4713 22 11.6845 22 12C22 12.3155 21.848 12.5287 21.544 12.955C20.1779 14.8706 16.6892 19 12 19C7.31078 19 3.8221 14.8706 2.45604 12.955C2.15201 12.5287 2 12.3155 2 12C2 11.6845 2.15201 11.4713 2.45604 11.045C3.8221 9.12944 7.31078 5 12 5C16.6892 5 20.1779 9.12944 21.544 11.045Z" stroke="currentColor" stroke-width="1.5" />
+                                        <path d="M15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12Z" stroke="currentColor" stroke-width="1.5" />
+                                    </svg>
+                                </a>
+                                <a href="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+                                        <path d="M15.2141 5.98239L16.6158 4.58063C17.39 3.80646 18.6452 3.80646 19.4194 4.58063C20.1935 5.3548 20.1935 6.60998 19.4194 7.38415L18.0176 8.78591M15.2141 5.98239L6.98023 14.2163C5.93493 15.2616 5.41226 15.7842 5.05637 16.4211C4.70047 17.058 4.3424 18.5619 4 20C5.43809 19.6576 6.94199 19.2995 7.57889 18.9436C8.21579 18.5877 8.73844 18.0651 9.78375 17.0198L18.0176 8.78591M15.2141 5.98239L18.0176 8.78591" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M11 20H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8">Pas de ville trouvée</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+
+        <div class="mt-10">
+            <a href="{{ path('app_output_new') }}">
+                <button type="button" class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Créer un site</button>
+            </a>
+        </div>
+    </div>
 {% endblock %}

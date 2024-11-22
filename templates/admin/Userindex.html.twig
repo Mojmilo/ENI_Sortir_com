@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Site index{% endblock %}
+{% block title %}User index{% endblock %}
 
 {% block body %}
 
@@ -8,16 +8,25 @@
 
 
     <div class="flex flex-col justify-center px-6 py-12 lg:px-8">
-        <h2 class="mt-10 text-2xl/9 font-bold tracking-tight text-gray-900">Site index</h2>
+        <h2 class="mt-10 text-2xl/9 font-bold tracking-tight text-gray-900">Utilisateurs index</h2>
         <div  class="relative overflow-x-auto sm:rounded-lg">
             <table class="mt-10 w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr class="border-b">
                         <th class="px-6 py-3">
-                            ID
+                            Pseudo
                         </th>
                         <th class="px-6 py-3">
                             Nom
+                        </th>
+                        <th class="px-6 py-3">
+                            Téléphone
+                        </th>
+                        <th class="px-6 py-3">
+                            Rôle
+                        </th>
+                        <th class="px-6 py-3">
+                            Actif
                         </th>
                         <th class="px-6 py-3">
                             Actions
@@ -25,15 +34,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for site in sites %}
+                {% for user in users %}
                     <tr class="bg-white border-t bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {{ site.id }}
+                            {{ user.pseudo }}
                         </th>
                         <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {{ site.name }} 
+                            {{ user.firstName }} {{ user.lastName }}
                         </th>
-                                        
+                        <td class="px-6 py-4">
+                            {{ user.phone }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% for role in user.roles %}
+                                {{ role }}
+                            {% endfor %}
+                            
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ user.active ? "Oui" : "Non" }}
+                        </td>
+                    
                         <td class="px-6 py-4">
                             <div class="flex justify-center items-center gap-4">
                                 <a href="">
@@ -53,7 +74,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="8">Pas de site trouvé</td>
+                        <td colspan="8">Pas d'utilisateur trouvé</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -63,7 +84,7 @@
 
         <div class="mt-10">
             <a href="{{ path('app_output_new') }}">
-                <button type="button" class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Créer un site</button>
+                <button type="button" class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Créer un utilisateur</button>
             </a>
         </div>
     </div>
