@@ -13,7 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé.')]
+#[UniqueEntity(fields: ['pseudo'], message: 'Ce pseudo est déjà utilisé.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -23,26 +24,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Veuillez renseigner un pseudo.')]
-    #[Assert\Length(min: 1, max:35)]
+    #[Assert\Length(min: 1, max:35, maxMessage:'Le pseudo ne doit pas dépasser 50 caractères.')]
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Veuillez renseigner un prénom.')]
-    #[Assert\Length(min: 1, max:50)]
+    #[Assert\Length(min: 1, max:50, maxMessage: 'Le prénom ne doit pas dépasser 50 caractères.')]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Veuillez renseigner un nom.')]
-    #[Assert\Length(min: 1, max:50)]
+    #[Assert\Length(min: 1, max:50, maxMessage: 'Le nom ne doit pas dépasser 50 caractères.')]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 10, max:10)]
+    #[ORM\Column(length: 10)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un numéro de téléphone.')]
+    #[Assert\Length(exactly: 10, exactMessage: 'Le numéro doit contenir exactement 10 caractères.')]
+    #[Assert\Regex(pattern: '/^\d{10}$/', message: 'Le numéro de téléphone doit contenir uniquement des chiffres.')]
     private ?string $phone = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotBlank(message: 'Veuillez renseigner un email.')]
-    #[Assert\Length(min: 1, max:180)]
+    #[Assert\Email(message: 'Veuillez saisir une adresse email valide.')]
+    #[Assert\Length(min:1, max: 180, maxMessage: 'L\'email ne doit pas dépasser 180 caractères.')]
     private ?string $email = null;
 
     /**

@@ -17,13 +17,16 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $isAdmin = $options['is_admin'] ?? false;
+
+
         $builder
             ->add('pseudo', TextType::class, [
                 'label' => 'Pseudo : ',
                 'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for'=>"pseudo"],
                 'attr'=>[
                     'id'=>'default-input',
-                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500',
                     'placeholder' => '...'
                 ]
             ])
@@ -32,7 +35,7 @@ class UserType extends AbstractType
                 'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for'=>"firstName"],
                 'attr'=>[
                     'id'=>'default-input',
-                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500',
                     'placeholder' => '...'
                 ]
             ])
@@ -41,7 +44,7 @@ class UserType extends AbstractType
                 'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for'=>"lastName"],
                 'attr'=>[
                     'id'=>'default-input',
-                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500',
                     'placeholder' => '...'
                 ]
             ])
@@ -50,7 +53,7 @@ class UserType extends AbstractType
                 'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for'=>"phone"],
                 'attr'=>[
                     'id'=>'default-input',
-                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500',
                     'placeholder' => '...'
                 ]
             ])
@@ -59,10 +62,10 @@ class UserType extends AbstractType
                 'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for'=>"email"],
                 'attr'=>[
                     'id'=>'default-input',
-                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                    'class'=>'mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500',
                     'placeholder' => '...'
                 ]
-            ])
+            ]);
             // ->add('active', ChoiceType::class, [
             //     'label' => 'Visibilité',
             //     'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for'=>"active"],
@@ -81,28 +84,29 @@ class UserType extends AbstractType
             //     }
             // ])
 
-            // 
             // <form class="max-w-sm mx-auto">
-            // "block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            // <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            // "block mb-2 text-sm font-medium text-gray-900 dark:text-gray"
+            // <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500">
             
-            // ->add('site', EntityType::class, [
-            //     'class' => Site::class,
-            //     'choice_label' => 'name',
-            //     'label' => 'Ville de rattachement',
-            //     'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for'=>"site"],
-            //     'attr'=>[
-            //         'class'=>'mb-5 block font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-            //         'placeholder' => 'Choisissez votre ville...'
-            //     ]
-            // ])
-        ;
+            if ($isAdmin) {
+            $builder->add('site', EntityType::class, [
+                'class' => Site::class,
+                'choice_label' => 'name',
+                'label' => 'Ville de rattachement',
+                'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for'=>"site"],
+                'attr'=>[
+                    'class'=>'mb-5 block font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                    'placeholder' => 'Choisissez une ville...'
+                ]
+                ]);
+            }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_admin' => false, // par defaut, l'utilisateur n'est pas admin
         ]);
     }
 }
