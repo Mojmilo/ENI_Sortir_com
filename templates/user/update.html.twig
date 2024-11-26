@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update profil{% endblock %}
+
+{% block body %}
+
+    {% if userForm.vars.value.id == null %}
+        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-gray">Create user</h2>
+    {% else %}
+        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-gray">Update user</h2>
+    {% endif %}
+    
+    <div class="max-w-sm mx-auto">
+        {{ form_start(userForm) }}
+        <div class="mb-5">
+            {{ form_label(userForm.pseudo) }}
+            {{ form_widget(userForm.pseudo) }}
+            {% if userForm.pseudo.vars.errors|length > 0 %}
+                <p class="text-red-500 text-sm mt-1">{{ userForm.pseudo.vars.errors|first.message }}</p>
+            {% endif %}
+        </div>
+        <div class="mb-5">
+            {{ form_label(userForm.firstName) }}
+            {{ form_widget(userForm.firstName) }}
+            {% if userForm.firstName.vars.errors|length > 0 %}
+                <p class="text-red-500 text-sm mt-1">{{ userForm.firstName.vars.errors|first.message }}</p>
+            {% endif %}
+        </div>
+        <div class="mb-5">
+            {{ form_label(userForm.lastName) }}
+            {{ form_widget(userForm.lastName) }}
+            {% if userForm.lastName.vars.errors|length > 0 %}
+                <p class="text-red-500 text-sm mt-1">{{ userForm.lastName.vars.errors|first.message }}</p>
+            {% endif %}
+        </div>
+        <div class="mb-5">
+            {{ form_label(userForm.phone) }}
+            {{ form_widget(userForm.phone) }}
+            {% if userForm.phone.vars.errors|length > 0 %}
+                <p class="text-red-500 text-sm mt-1">{{ userForm.phone.vars.errors|first.message }}</p>
+            {% endif %}
+        </div>
+        <div class="mb-5">
+            {{ form_label(userForm.email) }}
+            {{ form_widget(userForm.email) }}
+            {% if userForm.email.vars.errors|length > 0 %}
+                <p class="text-red-500 text-sm mt-1">{{ userForm.email.vars.errors|first.message }}</p>
+            {% endif %}
+        </div>
+        {% if userForm.site is defined %}
+            <div class="mb-5">
+                {{ form_label(userForm.site) }}
+                {{ form_widget(userForm.site) }}
+                {% if userForm.site.vars.errors|length > 0 %}
+                <p class="text-red-500 text-sm mt-1">{{ userForm.site.vars.errors|first.message }}</p>
+            {% endif %}
+            </div>
+        {% else %}
+            <div class="mb-5">
+                <label for="site" class="mb-3 text-gray-500 dark:text-gray-400"> <strong>Site de référencement : </strong></label>
+                <p>{{ user.site.name }}</p>
+            </div>
+        {% endif %}
+
+        <div class="mt-6 flex items-center justify-center gap-x-6">
+            <input type="submit"  value="{{ userForm.vars.value.id == null ? 'Create' : 'Modify' }}" class="flex justify-center rounded-md bg-gray-300 px-3 py-1.5 text-sm/6 font-semibold text-gray-900 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300"/>        
+        </div>
+        {{ form_end(userForm) }}
+    </div>
+
+
+{% endblock %}
