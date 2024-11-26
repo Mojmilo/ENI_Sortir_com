@@ -1,11 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Site{% endblock %}
+{% block title %}Nouveau Site{% endblock %}
 
 {% block body %}
-    <h1>Create new Site</h1>
 
-    {{ include('site/_form.html.twig') }}
+    {{ include('_header.html.twig') }} 
 
-    <a href="{{ path('app_site_index') }}">back to list</a>
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <a href="{{ path('app_site_index') }}">
+            <button type="button" class="flex justify-center rounded-md bg-gray-300 px-3 py-1.5 text-sm/6 font-semibold text-gray-900 shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300">Retour à la liste</button>
+        </a>
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+            <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gray-900">Créer un site</h2>
+        </div> 
+        {{ include('site/_form.html.twig') }}      
+    </div>
+
+   
 {% endblock %}
