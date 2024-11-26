@@ -46,7 +46,7 @@ class UserController extends AbstractController
         $user = $entityManager->getRepository(User::class)->findOneBy(array('id' => $id));
 
         if(!$user) {
-            throw $this->createNotFoundException('User not found for id '.$id);
+            throw $this->createAccessDeniedException('Not authorized');
         }
         
         return $this->render('user/show.html.twig', [
@@ -107,12 +107,6 @@ class UserController extends AbstractController
         // Get the user to delete
         $user = $entityManager->getRepository(User::class)->find($id);
 
-        // Verify if the user exists
-        if (!$user) {
-            $this->addFlash('error','Utilisateur introuvable');
-            return $this->redirectToRoute('app_output_index');
-        }
-
         // Retrieve the logged-in user
         $currentUser = $this->getUser();
 
@@ -125,24 +119,37 @@ class UserController extends AbstractController
             throw $this->createAccessDeniedException('Not authorized');
         }
 
-        // Vérifier le jeton CSRF pour éviter les attaques
+        // Vérifie le jeton CSRF pour éviter les attaques
         if (!$this->isCsrfTokenValid('delete_user_' . $user->getId(), $request->request->get('_token'))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
             return $this->redirectToRoute('app_user_id_show', ['id' => $user->getId()]);
         }
 
-        // Delete the user
-        $entityManager->remove($user);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Utilisateur supprimé avec succès.');
-
+        // If the logged-in user deletes his own account
+        if ($currentUser->getId() === $user->getId()) {
+            // Delete the CSRF token for the user
+            $this->container->get('security.token_storage')->setToken(null);
+            $request->getSession()->invalidate();
+        }
+        
         // Rediriger selon les droits de l'utilisateur
         if (in_array('ROLE_ADMIN', $currentUser->getRoles(), true)) {
+            // Delete the user
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'Utilisateur supprimé avec succès.');
+
             return $this->redirectToRoute('app_output_index'); // Redirige l'admin vers la liste des utilisateurs
+        } else {
+            // Delete the user
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Utilisateur supprimé avec succès.');
+            return $this->redirectToRoute('app_logout'); // Déconnecte l'utilisateur après avoir supprimé son compte
+
         }
 
-        return $this->redirectToRoute('app_logout'); // Déconnecte l'utilisateur après avoir supprimé son compte
     }
 
 }
