@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs par CSV{% endblock %}
+
+{% block body %}
+
+    {{ include('_header.html.twig') }} 
+
+    <input type="file" id="actual-btn"/>
+    <h1>Importer des utilisateurs depuis un fichier CSV</h1>
+
+    {#{{ form_start(form) }}
+        {{ form_row(form.csvFile) }}
+        <button class="btn">Importer</button>
+    {{ form_end(form) }}#}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+{% endblock %}
