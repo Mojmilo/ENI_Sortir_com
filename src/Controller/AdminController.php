@@ -34,6 +34,7 @@ class AdminController extends AbstractController
     {
         $form = $this->createForm(ImportUsersType::class);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupérer le fichier
             $file = $form->get('csvFile')->getData();
@@ -42,11 +43,11 @@ class AdminController extends AbstractController
                     // Sauvegarder le fichier temporairement
                     $filename = uniqid() . '.' . $file->guessExtension();
                     $file->move($this->getParameter('csv_directory'), $filename);
-    
+        
                     // Lire le fichier CSV et importer les utilisateurs
                     $filePath = $this->getParameter('csv_directory') . '/' . $filename;
                     $this->importUsersFromCSV($filePath, $entityManager);
-    
+        
                     // Ajouter un message de succès
                     $this->addFlash('success', 'Utilisateurs importés avec succès!');
                 } catch (FileException $e) {
@@ -54,11 +55,13 @@ class AdminController extends AbstractController
                     $this->addFlash('error', 'Une erreur est survenue lors de l\'importation du fichier.');
                 }
             }
-    
+        
             // Redirection après traitement pour éviter les resoumissions
             return $this->redirectToRoute('app_user_new_csv');
         }
-    
+        // dd($request);
+        
+        
         return $this->render('user/new_csv.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -66,47 +69,47 @@ class AdminController extends AbstractController
 
     private function importUsersFromCSV(string $filePath, EntityManagerInterface $entityManager): void
     {
-     
         if (($handle = fopen($filePath, 'r')) !== false) {
-            // Ignorer la première ligne si elle contient des en-têtes
-            fgetcsv($handle);
+            // Lire les en-têtes du CSV
+            $headers = fgetcsv($handle);
 
             while (($data = fgetcsv($handle)) !== false) {
-                // Récupérer les données du CSV (ex: nom, prénom, email, etc.)
-                //$site = new Site();
-                $site = $entityManager->getRepository(Site::class)->find($data[0]);
-                $first_name = $data[1];
-                $last_name = $data[2];
-                $phone = $data[3];
-                $email = $data[4];
-                $roles = json_decode($data[5], true);
-                $password = $data[6];
-                $active = $data[7];
-                $pseudo = $data[8];
+                // Associer les valeurs aux en-têtes
+                $row = array_combine($headers, $data);
 
-                   // dd($data[0]);
-                   // dd($data[1]);
-                   // dd($data[2]);
-                   // dd($data[3]);
-                   // dd($data[4]);
-                   // dd($data[5]);
-                   // dd($data[6]);
-                   // dd($data[7]);
-                   // dd($data[8]);
+                // Récupérer les données avec les noms des colonnes
+                $siteId = $row['site_id'] ?? null;
+                $firstName = $row['first_name'] ?? null;
+                $lastName = $row['last_name'] ?? null;
+                $phone = $row['phone'] ?? null;
+                $email = $row['email'] ?? null;
+                $roles = isset($row['role']) ? json_decode($row['role'], true) : [];
+                $password = $row['password'] ?? null;
+                $active = isset($row['active']) ? (bool)$row['active'] : false;
+                $pseudo = $row['pseudo'] ?? null;
 
-                    //TODO foreach + verif champs
+                // Vérification des données avant de créer un utilisateur
+                if (!$this->validateUserData($siteId, $firstName, $lastName, $phone, $email, $roles, $password, $pseudo)) {
+                    continue; // Passer à la ligne suivante si les données sont invalides
+                }
+
+                // Vérifier si le site existe
+                $site = $entityManager->getRepository(Site::class)->find($siteId);
+                if (!$site) {
+                    continue; // Si le site n'existe pas, on passe à la ligne suivante
+                }
+
                 // Créer un nouvel utilisateur
                 $user = new User();
-                $user->setSite($site);
-                $user->setFirstName($first_name);
-                $user->setLastname($last_name);
-                $user->setPhone($phone);
-                $user->setEmail($email);
-                $user->setRoles($roles);
-                $user->setPassword($password);
-                $user->setActive($active);
-                $user->setPseudo($pseudo);
-
+                $user->setSite($site)
+                    ->setFirstName($firstName)
+                    ->setLastName($lastName)
+                    ->setPhone($phone)
+                    ->setEmail($email)
+                    ->setRoles($roles)
+                    ->setPassword($password)
+                    ->setActive($active)
+                    ->setPseudo($pseudo);
 
                 // Sauvegarder l'utilisateur dans la base de données
                 $entityManager->persist($user);
@@ -118,4 +121,18 @@ class AdminController extends AbstractController
             $entityManager->flush();
         }
     }
+
+
+    private function validateUserData($siteId, $firstName, $lastName, $phone, $email, $roles, $password, $pseudo): bool
+    {
+        // Vérification que les champs nécessaires ne sont pas vides
+        if (empty($siteId) || empty($firstName) || empty($lastName) || empty($phone) || empty($email) || empty($roles) || empty($password) || empty($pseudo)) {
+            // Si un champ est vide, retourner false
+            return false;
+        }
+
+        // Autres vérifications peuvent être ajoutées ici (par exemple, format de l'email, longueur du mot de passe, etc.)
+        return true;
+    }
+
 }
