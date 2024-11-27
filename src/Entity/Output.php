@@ -47,11 +47,11 @@ class Output
 
     #[ORM\ManyToOne(inversedBy: 'outputs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?site $site = null;
+    private ?Site $site = null;
 
     #[ORM\ManyToOne(inversedBy: 'outputs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?location $location = null;
+    private ?Location $location = null;
 
     #[ORM\Column(length: 255)]
     private ?Status $status = null;
