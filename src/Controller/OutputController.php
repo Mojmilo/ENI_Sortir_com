@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use App\Entity\Output;
 use App\Entity\Site;
 use App\Enum\Status;
@@ -68,6 +69,17 @@ final class OutputController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $newCity = $request->request->get('new_city_input');
+            $newCityPostalCode = $request->request->get('new_city_input_postal_code');
+
+            if ($newCity) {
+                $city = new City();
+                $city->setName($newCity);
+                $city->setPostalCode($newCityPostalCode);
+                $entityManager->persist($city);
+                $output->getLocation()->setCity($city);
+            }
+
             $location = $output->getLocation();
             if ($location) {
                 $entityManager->persist($location);
@@ -90,6 +102,7 @@ final class OutputController extends AbstractController
         return $this->render('output/new.html.twig', [
             'output' => $output,
             'form' => $form,
+            'cities' => $entityManager->getRepository(City::class)->findAll(),
         ]);
     }
 
@@ -169,7 +182,7 @@ final class OutputController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_output_index');
+        return $this->redirectToRoute('app_home_index');
     }
 
     #[Route('/{id}/unjoin', name: 'app_output_unjoin', methods: ['GET', 'POST'])]
@@ -181,6 +194,6 @@ final class OutputController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_output_index');
+        return $this->redirectToRoute('app_home_index');
     }
 }
