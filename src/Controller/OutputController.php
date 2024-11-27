@@ -182,7 +182,7 @@ final class OutputController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_output_index');
+        return $this->redirectToRoute('app_home_index');
     }
 
     #[Route('/{id}/unjoin', name: 'app_output_unjoin', methods: ['GET', 'POST'])]
@@ -194,6 +194,6 @@ final class OutputController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_output_index');
+        return $this->redirectToRoute('app_home_index');
     }
 }
