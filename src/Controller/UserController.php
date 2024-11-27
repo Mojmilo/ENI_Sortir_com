@@ -38,6 +38,14 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/index',name: 'app_user_index', methods: ['GET'])]
+    public function index(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
     // Display the profil page for a specific user
     #[Route('/{id}', name: 'app_user_id_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function profil(EntityManagerInterface $entityManager, int $id): Response
