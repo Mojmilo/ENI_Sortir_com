@@ -10,7 +10,7 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
+
     firewalls:
         # the order in which firewalls are defined is very important, as the
         # request will be handled by the first firewall whose pattern matches
