@@ -4,15 +4,12 @@
 
 {% block body %}
 
-    {{ include('_header.html.twig') }} 
-
-    <input type="file" id="actual-btn"/>
-    <h1>Importer des utilisateurs depuis un fichier CSV</h1>
-
-    {#{{ form_start(form) }}
+    <h2 class="text-center text-2xl/9 font-bold tracking-tight text-gray-900">Importer des utilisateurs depuis un fichier CSV</h2>
+    
+    {{ form_start(form) }}
         {{ form_row(form.csvFile) }}
         <button class="btn">Importer</button>
-    {{ form_end(form) }}#}
+    {{ form_end(form) }}
 
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">{{ message }}</div>
@@ -20,4 +17,5 @@
     {% for message in app.flashes('error') %}
         <div class="alert alert-danger">{{ message }}</div>
     {% endfor %}
+
 {% endblock %}
