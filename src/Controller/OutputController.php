@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use App\Entity\Output;
 use App\Entity\Site;
 use App\Enum\Status;
@@ -68,6 +69,17 @@ final class OutputController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $newCity = $request->request->get('new_city_input');
+            $newCityPostalCode = $request->request->get('new_city_input_postal_code');
+
+            if ($newCity) {
+                $city = new City();
+                $city->setName($newCity);
+                $city->setPostalCode($newCityPostalCode);
+                $entityManager->persist($city);
+                $output->getLocation()->setCity($city);
+            }
+
             $location = $output->getLocation();
             if ($location) {
                 $entityManager->persist($location);
@@ -90,6 +102,7 @@ final class OutputController extends AbstractController
         return $this->render('output/new.html.twig', [
             'output' => $output,
             'form' => $form,
+            'cities' => $entityManager->getRepository(City::class)->findAll(),
         ]);
     }
 
