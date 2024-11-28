@@ -15,10 +15,6 @@ class ImportUsersType extends AbstractType
             ->add('csvFile', FileType::class, [
                 'label' => 'Fichier CSV',
                 'constraints' => [
-                    new File([
-                        'mimeTypes' => ['text/csv', 'application/csv', 'application/vnd.ms-excel'],
-                        'mimeTypesMessage' => 'Veuillez télécharger un fichier CSV valide.',
-                    ])
                 ],
             ]);
     }
