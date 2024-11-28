@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-6">Edit City</h1>
+        <h1 class="text-2xl font-bold mb-6">Editer la ville</h1>
 
         <div class="bg-white shadow-md rounded-lg p-6">
             {{ form_start(form, { 'attr': { 'class': 'space-y-4' } }) }}
@@ -27,9 +27,9 @@
 
             <div>
                 <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none">
-                    Update
+                    Mettre à jour
                 </button>
-                <a href="{{ path('app_city_index') }}" class="ml-4 text-blue-500 hover:underline">Back to list</a>
+                <a href="{{ path('app_city_index') }}" class="ml-4 text-blue-500 hover:underline">Retour à la liste</a>
             </div>
 
             {{ form_end(form) }}

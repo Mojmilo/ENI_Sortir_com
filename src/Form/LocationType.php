@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\city;
+use App\Entity\City;
 use App\Entity\Location;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -30,7 +30,7 @@ class LocationType extends AbstractType
             ])
             ->add('city', EntityType::class, [
                 'label' => 'Ville',
-                'class' => city::class,
+                'class' => City::class,
                 'choice_label' => 'name',
             ])
         ;
