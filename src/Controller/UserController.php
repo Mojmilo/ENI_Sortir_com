@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\ChangePasswordFormType;
+use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -218,5 +219,44 @@ class UserController extends AbstractController
 
     }
 
+
+    // Create an user
+    #[Route('/create', name: 'app_register', methods: ['GET', 'POST'])]
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response {
+        // Get the logged-in user
+        $currentUser = $this->getUser();
+
+        if (!$currentUser) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // If the logged-in user is not an admin, deny access
+        if (!in_array('ROLE_ADMIN', $currentUser->getRoles(), true)) {
+            throw $this->createAccessDeniedException('Not authorized');
+        }
+
+        $user = new User();
+        $user->setRoles(['ROLE_USER']);
+
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var string $plainPassword */
+            $plainPassword = $form->get('plainPassword')->getData();
+
+            // encode the plain password
+            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_output_index');
+        }
+
+        return $this->render('user/new.html.twig', [
+            'userForm' => $form,
+        ]);
+    }
 
 }
