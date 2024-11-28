@@ -36,9 +36,17 @@ class UserController extends AbstractController
         if(!$user) {
             return $this->redirectToRoute('app_login');
         }
-        
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
+        ]);
+    }
+
+    #[Route('/index',name: 'app_user_index', methods: ['GET'])]
+    public function index(UserRepository $userRepository): Response
+    {
+        return $this->render('user/index.html.twig', [
+            'users' => $userRepository->findAll(),
         ]);
     }
 
@@ -52,7 +60,7 @@ class UserController extends AbstractController
         if(!$user) {
             throw $this->createAccessDeniedException('Not authorized');
         }
-        
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -72,39 +80,39 @@ class UserController extends AbstractController
         if(!$currentUser) {
             return $this->redirectToRoute('app_login');
         }
-        
+
         // If the logged-in user is not the same as the target user AND is not an admin, deny access
         if(!$user || ($currentUser->getId() != $user->getId() && !in_array('ROLE_ADMIN', $currentUser->getRoles(), true))) {
             throw $this->createAccessDeniedException('Not authorized');
         }
 
-        
+
         // Check if the current user is an admin to allow editing of the city
         $isAdmin = in_array('ROLE_ADMIN', $currentUser->getRoles(), true);
-        
+
         // Create the form with the user's data, passing the is_admin flag to the form
         $userForm = $this->createForm(UserType::class, $user, ['is_admin'=>$isAdmin]);
         $userForm->handleRequest($request);
-        
+
         if($userForm->isSubmitted() && $userForm->isValid()) {
             // Save into database
             $entityManager->persist($user);
             $entityManager->flush();
-            
+
             $this->addFlash("success", "User updated successfully !");
 
             return $this->redirectToRoute('app_user_id_show', ['id'=>$user->getId()]);
         }
-        
+
         return $this->render('user/update.html.twig', [
             'userForm' => $userForm,
             'user' => $user
         ]);
     }
 
-    
 
-    // 
+
+    //
     #[Route('/delete/{id}', name:'app_user_id_delete', requirements:['id'=>'\d+'], methods: ['POST'])]
     public function delete(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -135,7 +143,7 @@ class UserController extends AbstractController
             $this->container->get('security.token_storage')->setToken(null);
             $request->getSession()->invalidate();
         }
-        
+
         // Rediriger selon les droits de l'utilisateur
         if (in_array('ROLE_ADMIN', $currentUser->getRoles(), true)) {
             // Delete the user
