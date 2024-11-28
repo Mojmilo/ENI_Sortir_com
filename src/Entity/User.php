@@ -72,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'members')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?site $site = null;
+    private ?Site $site = null;
 
     public function __construct()
     {
@@ -244,12 +244,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSite(): ?site
+    public function getSite(): ?Site
     {
         return $this->site;
     }
 
-    public function setSite(?site $site): static
+    public function setSite(?Site $site): static
     {
         $this->site = $site;
 

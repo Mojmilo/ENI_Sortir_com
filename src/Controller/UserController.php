@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\ChangePasswordFormType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,8 +13,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Form\FormError;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 #[Route('/profil')]
 class UserController extends AbstractController
@@ -138,18 +142,73 @@ class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
             $this->addFlash('success', 'Utilisateur supprimé avec succès.');
-
             return $this->redirectToRoute('app_output_index'); // Redirige l'admin vers la liste des utilisateurs
         } else {
             // Delete the user
             $entityManager->remove($user);
             $entityManager->flush();
-
             $this->addFlash('success', 'Utilisateur supprimé avec succès.');
             return $this->redirectToRoute('app_logout'); // Déconnecte l'utilisateur après avoir supprimé son compte
-
         }
 
     }
+
+
+
+    // Change the password
+    #[Route('/update-password/{id}', name: 'app_user_id_password_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function updatePassword(int $id, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        // Get the user by id
+        $user = $entityManager->getRepository(User::class)->findOneBy(['id' => $id]);
+
+        // Get the logged-in user
+        $currentUser = $this->getUser();
+
+
+        if (!$currentUser) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // If the logged-in user is not the same as the target user AND is not an admin, deny access
+        if (!$user || ($currentUser->getId() != $user->getId() && !in_array('ROLE_ADMIN', $currentUser->getRoles(), true))) {
+            throw $this->createAccessDeniedException('Not authorized');
+        }
+
+        // Create the form
+        $userForm = $this->createForm(ChangePasswordFormType::class);
+        $userForm->handleRequest($request);
+
+
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+            $oldPassword = $userForm->get('oldPassword')->getData();
+            $newPassword = $userForm->get('newPassword')->getData();
+
+            // Verify the old password
+            if (!$passwordHasher->isPasswordValid($user, $oldPassword)) {
+                $this->addFlash('error', 'Mot de passe incorrect.');
+                $userForm->get('oldPassword')->addError(new FormError('Mot de passe incorrect.'));
+                return $this->redirectToRoute('app_user_id_password_update', ['id' => $user->getId()]);
+            }
+
+            // Update the password and save into database
+            $hashedNewPassword = $passwordHasher->hashPassword($user, $newPassword);
+            $currentUser->setPassword($hashedNewPassword);
+            $entityManager->persist($currentUser);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre mot de passe a été mis à jour avec succès.');
+
+            return $this->redirectToRoute('app_user_id_show', ['id' => $user->getId()]);
+        }
+
+        // Rendu de la vue
+        return $this->render('user/updatePassword.html.twig', [
+            'changePasswordForm' => $userForm->createView(),
+            'user' => $user,
+        ]);
+
+    }
+
 
 }
