@@ -1,0 +1,2 @@
+site_id,first_name,last_name,phone,email,role,password,active,pseudo
+"1",Alice,Smith,0123456789,alice.smith@example.com,["ROLE_USER"],$2y$13$TGp9s7NtBuPXLQOr7pA2heFG/Hsir0KoMSzG6FFCTyS7Szj9.xsmS,1,AliceWonder
