@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Entity\Site;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -93,28 +93,21 @@ class RegistrationFormType extends AbstractType
                     'placeholder' => 'Choisissez une ville...'
                 ]
             ])
-            ->add('plainPassword', PasswordType::class, [
+            ->add('password', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
-                'mapped' => false,
                 'label' => 'Mot de passe : ',
-                'attr' => ['autocomplete' => 'new-password'],
-                'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for' => "plainPassword"],
+                'label_attr' => ['class' => 'mb-3 font-bold text-gray-500 dark:text-gray-400', 'for' => "password"],
                 'attr'=>[
                     'class'=>'mb-5 block font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500',
                     'placeholder' => '...'
                 ],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez compléter le champ.',
+                    new Assert\PasswordStrength([
+                        'minScore' => 2,
+                        'message' => 'Le mot de passe doit contenir au moins 8 caractères, dont 1 lettre et 1 chiffre.'
                     ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => 'Le mot de passe doit être composé d\'au moins {{ limit }} caractères.',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 100,
-                    ]),
-                ],
+                ]
             ])
         ;
     }

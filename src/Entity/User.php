@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -24,7 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Veuillez renseigner un pseudo.')]
-    #[Assert\Length(min: 1, max:35, maxMessage:'Le pseudo ne doit pas dépasser 50 caractères.')]
+    #[Assert\Length(min: 1, max:35, maxMessage:'Le pseudo ne doit pas dépasser 35 caractères.')]
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 255)]
@@ -59,6 +60,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message:'Ce champ est obligatoire.')]
+    #[Assert\PasswordStrength(minScore: PasswordStrength::STRENGTH_MEDIUM, message: 'Le mot de passe doit contenir au moins 8 caractères dont 1 chiffre et 1 lettre.')]
     private ?string $password = null;
 
     #[ORM\Column]

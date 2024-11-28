@@ -43,10 +43,10 @@
             {% endif %}
         </div>
         <div class="mb-5">
-            {{ form_label(userForm.plainPassword) }}
-            {{ form_widget(userForm.plainPassword) }}
-            {% if userForm.plainPassword.vars.errors|length > 0 %}
-                <p class="text-red-500 text-sm mt-1">{{ userForm.plainPassword.vars.errors|first.message }}</p>
+            {{ form_label(userForm.password) }}
+            {{ form_widget(userForm.password) }}
+            {% if userForm.password.vars.errors|length > 0 %}
+                <p class="text-red-500 text-sm mt-1">{{ userForm.password.vars.errors|first.message }}</p>
             {% endif %}
         </div>
         <div class="mb-5">
