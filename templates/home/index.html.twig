@@ -84,7 +84,9 @@
                 {% for output in outputs %}
                     {% if output.status.value == 'open' and output.registrationDeadline >= date('now') or output.startDatetime >= date('now') %}
                         <div class="flex flex-col items-start justify-center gap-2">
-                            <image src="{{ asset('images/event.jpg') }}" class="w-full h-[200px] object-cover"></image>
+                            <a href="{{ path('app_output_show', { id: output.id }) }}" class="w-full h-[200px]">
+                                <image src="{{ asset('images/event.jpg') }}" class="w-full h-full object-cover"></image>
+                            </a>
                             <div class="flex flex-col items-start justify-center gap-1 w-full">
                                 <div class="flex justify-between items-center w-full">
                                     <span class="text-lg font-semibold">{{ output.name }}</span>
@@ -108,13 +110,13 @@
                                 </div>
                                 <span class="text-xs text-gray-900">{{ output.site.name }}</span>
                                 <div class="flex justify-center items-center gap-2">
-                    <span class="text-sm font-semibold text-orange-700">
-                        {{ output.startDatetime|date('D. d M.') }}
-                    </span>
+                                    <span class="text-sm font-semibold text-orange-700">
+                                        {{ output.startDatetime|date('D. d M.') }}
+                                    </span>
                                     <div class="w-[1px] h-4 bg-gray-900"></div>
                                     <span class="text-sm font-semibold text-orange-700">
-                        {{ output.startDatetime|date('H:i') }}
-                    </span>
+                                        {{ output.startDatetime|date('H:i') }}
+                                    </span>
                                 </div>
                             </div>
                         </div>

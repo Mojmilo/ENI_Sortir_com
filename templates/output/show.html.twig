@@ -3,7 +3,7 @@
 {% block title %}Output{% endblock %}
 
 {% block body %}
-    <h1>Output</h1>
+    {# <h1>Output</h1>
 
     <table class="table">
         <tbody>
@@ -42,5 +42,71 @@
 
     <a href="{{ path('app_output_edit', {'id': output.id}) }}">edit</a>
 
-    {{ include('output/_delete_form.html.twig') }}
+    {{ include('output/_delete_form.html.twig') }} #}
+
+    <main class="flex flex-col items-start justify-center gap-20 px-20">
+        <div class="flex justify-center items-center gap-4">
+            <div class="flex flex-col items-start justify-center gap-1 w-[600px]">
+                <span class="text-4xl font-semibold">{{ output.name }}</span>
+                <span class="text-sm"><span class="text-gray-700">Par</span> <span class="font-semibold">{{ output.organisator.firstName }}</span></span>
+                <div class="mt-4 flex flex-col items-start justify-center divide-y divide-gray-300">
+                    <div class="flex justify-center items-center gap-4 py-4">
+                        <svg class="text-gray-700 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+                            <path d="M18 2V4M6 2V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M11.9955 13H12.0045M11.9955 17H12.0045M15.991 13H16M8 13H8.00897M8 17H8.00897" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M3.5 8H20.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2.5 12.2432C2.5 7.88594 2.5 5.70728 3.75212 4.35364C5.00424 3 7.01949 3 11.05 3H12.95C16.9805 3 18.9958 3 20.2479 4.35364C21.5 5.70728 21.5 7.88594 21.5 12.2432V12.7568C21.5 17.1141 21.5 19.2927 20.2479 20.6464C18.9958 22 16.9805 22 12.95 22H11.05C7.01949 22 5.00424 22 3.75212 20.6464C2.5 19.2927 2.5 17.1141 2.5 12.7568V12.2432Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M3 8H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <div class="flex justify-center items-center gap-2">
+                                    <span class="text-sm font-semibold text-orange-700">
+                                        {{ output.startDatetime|date('D. d M.') }}
+                                    </span>
+                            <div class="w-[1px] h-4 bg-gray-900"></div>
+                            <span class="text-sm font-semibold text-orange-700">
+                                        {{ output.startDatetime|date('H:i') }}
+                                    </span>
+                        </div>
+                    </div>
+                    <div class="flex justify-center items-center gap-4 py-4">
+                        <svg class="text-gray-700 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+                            <path d="M15.0002 17C14.2007 17.6224 13.1504 18 12.0002 18C10.8499 18 9.79971 17.6224 9.00018 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M2.35157 13.2135C1.99855 10.9162 1.82204 9.76763 2.25635 8.74938C2.69065 7.73112 3.65421 7.03443 5.58132 5.64106L7.02117 4.6C9.41847 2.86667 10.6171 2 12.0002 2C13.3832 2 14.5819 2.86667 16.9792 4.6L18.419 5.64106C20.3462 7.03443 21.3097 7.73112 21.744 8.74938C22.1783 9.76763 22.0018 10.9162 21.6488 13.2135L21.3478 15.1724C20.8473 18.4289 20.5971 20.0572 19.4292 21.0286C18.2613 22 16.5538 22 13.139 22H10.8614C7.44652 22 5.73909 22 4.57118 21.0286C3.40327 20.0572 3.15305 18.4289 2.65261 15.1724L2.35157 13.2135Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                        </svg>
+                        <span class="text-xs text-gray-900">{{ output.site.name }}</span>
+                    </div>
+                    <div class="flex justify-center items-center gap-4 py-4">
+                        <svg class="text-gray-700 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+                            <path d="M13.6177 21.367C13.1841 21.773 12.6044 22 12.0011 22C11.3978 22 10.8182 21.773 10.3845 21.367C6.41302 17.626 1.09076 13.4469 3.68627 7.37966C5.08963 4.09916 8.45834 2 12.0011 2C15.5439 2 18.9126 4.09916 20.316 7.37966C22.9082 13.4393 17.599 17.6389 13.6177 21.367Z" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M15.5 11C15.5 12.933 13.933 14.5 12 14.5C10.067 14.5 8.5 12.933 8.5 11C8.5 9.067 10.067 7.5 12 7.5C13.933 7.5 15.5 9.067 15.5 11Z" stroke="currentColor" stroke-width="1.5" />
+                        </svg>
+                        <span class="text-xs text-gray-900">{{ output.location.name }}</span>
+                    </div>
+                </div>
+                <span class="text-sm"><span class="font-semibold">{{ output.members|length }}</span> sont inscrits</span>
+            </div>
+            <image src="{{ asset('images/event.jpg') }}" class="w-full h-[400px] object-cover"></image>
+        </div>
+        <div class="flex flex-col items-start justify-center gap-10 w-full">
+            <span class="text-xl font-semibold">Membres inscrits</span>
+            <div class="flex flex-col items-start justify-center gap-4 w-full">
+                {% for member in output.members %}
+                    <div class="flex justify-between items-center w-full">
+                        <div class="flex justify-center items-center gap-2">
+                            <image src="{{ asset('images/event.jpg') }}" class="w-20 h-20 object-cover rounded-full"></image>
+                            <div class="flex flex-col items-start justify-center">
+                                <span class="text-sm font-semibold">{{ member.firstName }} {{ member.lastName }}</span>
+                                <span class="text-xs text-gray-700">{{ member.email }}</span>
+                            </div>
+                        </div>
+                        <a href="{{ path('app_user_id_show', { id: member.id }) }}">
+                            <button type="button" class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                Voir le profile
+                            </button>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
 {% endblock %}
