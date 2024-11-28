@@ -3,45 +3,6 @@
 {% block title %}Output index{% endblock %}
 
 {% block body %}
-    {# <h1>Output index</h1> #}
-
-    {# <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>StartDatetime</th>
-                <th>Duration</th>
-                <th>RegistrationDeadline</th>
-                <th>MaxNumberRegistration</th>
-                <th>ExitInfos</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for output in outputs %}
-            <tr>
-                <td>{{ output.id }}</td>
-                <td>{{ output.name }}</td>
-                <td>{{ output.startDatetime ? output.startDatetime|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ output.duration }}</td>
-                <td>{{ output.registrationDeadline ? output.registrationDeadline|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ output.maxNumberRegistration }}</td>
-                <td>{{ output.exitInfos }}</td>
-                <td>
-                    <a href="{{ path('app_output_show', {'id': output.id}) }}">show</a>
-                    <a href="{{ path('app_output_edit', {'id': output.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table> > #}
-
-    {# <a href="{{ path('app_output_new') }}">Create new</a> #}
 
     <div class="flex flex-col justify-center px-6 py-12 lg:px-8">
         <h2 class="mt-10 text-2xl/9 font-bold tracking-tight text-gray-900">Filtrer les sorties</h2>
@@ -156,7 +117,7 @@
                                     <path d="M11 20H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
                             </a>
-                            {% if app.user == output.organisator %}
+                            {% if app.user == output.organisator or is_granted("ROLE_ADMIN") %}
                                 <a href="{{ path('app_output_cancel', {'id': output.id}) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
                                         <path d="M14.9994 15L9 9M9.00064 15L15 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
