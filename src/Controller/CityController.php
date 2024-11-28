@@ -32,7 +32,9 @@ final class CityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($city);
             $entityManager->flush();
-
+        
+            $this->addFlash('success', 'La ville a été ajoutée avec succès !');
+        
             return $this->redirectToRoute('app_city_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -42,7 +44,7 @@ final class CityController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_city_show', methods: ['GET'])]
+    #[Route('/{id<\d+>}', name: 'app_city_show', methods: ['GET'])]
     public function show(City $city): Response
     {
         return $this->render('city/show.html.twig', [
@@ -50,7 +52,7 @@ final class CityController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_city_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id<\d+>}/edit', name: 'app_city_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, City $city, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CityType::class, $city);
@@ -58,7 +60,9 @@ final class CityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+        
+            $this->addFlash('success', 'La ville a été modifiée avec succès !');
+        
             return $this->redirectToRoute('app_city_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -68,12 +72,14 @@ final class CityController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_city_delete', methods: ['POST'])]
+    #[Route('/{id<\d+>}/delete', name: 'app_city_delete', methods: ['POST'])]
     public function delete(Request $request, City $city, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$city->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$city->getId(), $request->get('_token'))) {
             $entityManager->remove($city);
             $entityManager->flush();
+        
+            $this->addFlash('success', 'La ville a été supprimée avec succès !');
         }
 
         return $this->redirectToRoute('app_city_index', [], Response::HTTP_SEE_OTHER);
