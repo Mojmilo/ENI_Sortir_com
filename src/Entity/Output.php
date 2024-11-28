@@ -179,24 +179,24 @@ class Output
         return $this->members->contains($member);
     }
 
-    public function getSite(): ?site
+    public function getSite(): ?Site
     {
         return $this->site;
     }
 
-    public function setSite(?site $site): static
+    public function setSite(?Site $site): static
     {
         $this->site = $site;
 
         return $this;
     }
 
-    public function getLocation(): ?location
+    public function getLocation(): ?Location
     {
         return $this->location;
     }
 
-    public function setLocation(?location $location): static
+    public function setLocation(?Location $location): static
     {
         $this->location = $location;
 
